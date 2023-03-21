@@ -3,40 +3,19 @@ import Head from "next/head";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "~/utils/api";
-import axios from 'axios';
+import React from "react";
+import updateReports from "~/server/data-etl";
 
 const Home: NextPage = () => {
   // const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
-  const fetchData = async () => {
-
-    console.log("Running data fetch...")
+  const handleClick = () => {
     
-    const lat = 42.9858; // Jenness Beach
-    const lng = 70.7623; // Jenness Beach
-    const params = 'waveHeight,wavePeriod,windSpeed,swellHeight,swellPeriod,airTemperature,waterTemperature';
+    const spotId = '60492e85f79634ecb8e7b0fa'; // Jenness
 
-    const start = new Date("03/17/2023").toISOString();
-    const end = new Date("03/30/2023").toISOString();
-
-    // The api URL
-    const url = `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${params}&start=${start}&end=${end}`;
-
-    const resp = await fetch(url, {
-      headers: {
-        'Authorization': process.env.STORM_GLASS_IO_KEY!
-      }
-    }).then((response) => response.json()).then((jsonData) => {
-      
-      console.log(jsonData);
-    });
-
-    console.log(resp)
-
-    // const resp = axios.get(url, config)
-    //   .then(res => console.log(res))
-    //   .catch(err => console.error(err));
-
+    void (async () => {
+      await updateReports(spotId);
+    })();
   }
 
   return (
@@ -48,10 +27,12 @@ const Home: NextPage = () => {
       </Head>
       <main className="min-h-screen bg-gray-900">
 
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={fetchData}
-      >Fetch Data</button>
+        <button
+          className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+          onClick={handleClick}
+        >
+          Fetch Data
+        </button>
 
       </main>
     </>

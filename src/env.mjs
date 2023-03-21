@@ -28,12 +28,13 @@ const server = z.object({
  * built with invalid env vars. To expose them to the client, prefix them with `NEXT_PUBLIC_`.
  */
 const client = z.object({
-  // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_WAVE_API_URI: z.string(),
+  // NEXT_PUBLIC_CLIENT_VAR: z.string().min(1),
 });
 
 /**
- * You can't destruct `process.env` as a regular object in the Next.js edge runtimes (e.g.
- * middlewares) or client-side so we need to destruct manually.
+ * You can't destruct `process.env` as a regular object in the Next.js edge run-times (e.g.
+ * middleware) or client-side so we need to destruct manually.
  *
  * @type {Record<keyof z.infer<typeof server> | keyof z.infer<typeof client>, string | undefined>}
  */
@@ -44,7 +45,8 @@ const processEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
   DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
-  // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
+  NEXT_PUBLIC_WAVE_API_URI: process.env.NEXT_PUBLIC_WAVE_API_URI
+  // NEXT_PUBLIC_CLIENT_VAR: process.env.NEXT_PUBLIC_CLIENT_VAR,
 };
 
 // Don't touch the part below

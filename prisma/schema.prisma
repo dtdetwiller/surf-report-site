@@ -65,3 +65,23 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
+model Spots {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    spotId String
+    name String
+}
+
+model Reports {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    timestamp Int
+    utcOffset Int
+    waveHeightMin Int
+    waveHeightMax Int
+    humanRelation String
+    windDirectionType String
+    windSpeed String // KTS
+    windDirection String 
+    sunrise Int
+    sunset Int
+}
