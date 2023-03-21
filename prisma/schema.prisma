@@ -14,12 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// model Example {
-//     id        String   @id @default(auto()) @map("_id") @db.ObjectId
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
-// }
-
 // Necessary for Next auth
 model Account {
     id                String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -55,6 +49,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    roles         String[]
 }
 
 model VerificationToken {
@@ -72,16 +67,11 @@ model Spots {
     name String
 }
 
-model Reports {
+model WaveReports {
     id String @id @default(auto()) @map("_id") @db.ObjectId
-    timestamp Int
+    timestamp DateTime
     utcOffset Int
     waveHeightMin Int
     waveHeightMax Int
     humanRelation String
-    windDirectionType String
-    windSpeed String // KTS
-    windDirection String 
-    sunrise Int
-    sunset Int
 }
