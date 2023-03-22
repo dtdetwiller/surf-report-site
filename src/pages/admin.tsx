@@ -92,7 +92,7 @@ const Admin: NextPage = () => {
     <main className="min-h-screen bg-gray-900">
 
       <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+        className="btn"
         onClick={updateData}
       >
         Fetch Data
