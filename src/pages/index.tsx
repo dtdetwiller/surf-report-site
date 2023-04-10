@@ -1,16 +1,22 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
-import { api } from "~/utils/api";
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from 'next/router';
 
-const Home: NextPage = () => {
+const Start: NextPage = () => {
 
-  const { data: sessionData } = useSession();
+  const { data: session } = useSession();
+  const router = useRouter();
 
-  console.log("session", sessionData)
+  useEffect(() => {
+    if (session) {
+      void router.push('/home');
+    }
+  }, [session, router]);
+
 
   return (
     <>
@@ -20,11 +26,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center items-center-h-screen gap-10">
-
-        <div className="text-white">
-          <h1 className="text-500 text-4xl">🌊 Ones</h1>
-        </div>
+      <main className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">
 
         <AuthShowcase />
 
@@ -33,45 +35,22 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Start;
 
 const AuthShowcase: React.FC = () => {
 
-  const { data: sessionData } = useSession();
+  const { data: session } = useSession();
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
-      
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Sup {sessionData.user?.name}</span>}
-      </p>
 
-      { !sessionData &&
+      { !session &&
         <button
         className="btn"
         onClick={() => void signIn()}
         >
           Sign in
         </button>
-      }
-
-      { sessionData?.user.roles.includes('admin') &&
-      <div>
-        <Link href="/admin">
-          <button className="btn">
-            Admin Page
-          </button>
-        </Link>
-
-        <label htmlFor="spots" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select an option</label>
-        <select id="spots" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-          <option selected>Choose a country</option>
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-          <option value="FR">France</option>
-          <option value="DE">Germany</option>
-        </select>
-      </div>
       }
 
     </div>

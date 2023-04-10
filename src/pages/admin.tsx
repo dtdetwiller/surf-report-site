@@ -47,6 +47,7 @@ const Admin: NextPage = () => {
 
   const { data: sessionData } = useSession();
   const insertWaveReport = api.reports.insertWaveReport.useMutation();
+  // Remove the old reports api
   
   const updateData = () => {
     
@@ -66,6 +67,7 @@ const Admin: NextPage = () => {
 
             // Create the wave report object
             const waveReport = {
+              spotId: spotId,
               timestamp: new Date(wave.timestamp * 1000), // Convert Unix to datetime
               utcOffset: wave.utcOffset,
               waveHeightMin: wave.surf.min,
@@ -79,6 +81,8 @@ const Admin: NextPage = () => {
             });
 
           }
+
+
 
         })
         .catch((err) => {

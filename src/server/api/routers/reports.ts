@@ -8,6 +8,7 @@ import {
 export const reportsRouter = createTRPCRouter({
   insertWaveReport: publicProcedure
     .input(z.object({
+      spotId: z.string(),
       timestamp: z.date(),
       utcOffset: z.number(),
       waveHeightMin: z.number(),
@@ -23,4 +24,17 @@ export const reportsRouter = createTRPCRouter({
       });
 
     }),
+  
+  get16DayReportBySpotId: publicProcedure
+    .input(z.object({
+      spotId: z.string()
+    }))
+    .query(({ctx, input}) => {
+      
+      return ctx.prisma.waveReports.findMany({
+        where: {
+          spotId: input.spotId
+        }
+      })
+    })
 });

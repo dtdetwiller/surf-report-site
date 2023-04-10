@@ -1,3 +1,5 @@
+import { faWater } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
@@ -8,9 +10,9 @@ const Navbar: React.FC = () => {
   const { data: sessionData } = useSession();
 
   return (
-    <nav className="flex justify-between items-center text-white p-6">
-      <div className="text-white text-xl">
-        Ones 🌊
+    <nav className="flex justify-between items-center text-white p-4">
+      <div className="text-white text-2xl">
+        <FontAwesomeIcon icon={faWater} />
       </div>
 
       { sessionData && sessionData.user.image &&

@@ -63,12 +63,13 @@ model VerificationToken {
 
 model Spots {
     id String @id @default(auto()) @map("_id") @db.ObjectId
-    spotId String
+    spotId String @unique
     name String
 }
 
 model WaveReports {
     id String @id @default(auto()) @map("_id") @db.ObjectId
+    spotId String
     timestamp DateTime
     utcOffset Int
     waveHeightMin Int

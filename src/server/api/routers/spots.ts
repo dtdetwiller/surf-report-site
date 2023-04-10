@@ -6,17 +6,27 @@ import {
 } from "~/server/api/trpc";
 
 export const spotsRouter = createTRPCRouter({
+  
   spotBySpotId: publicProcedure
     .input(z.object({
       spotId: z.string()
      }))
-    .query(async ({ input, ctx }) => {
-      
-      await ctx.prisma.spots.findUnique({
+    .query(({ input, ctx }) => {
+      return ctx.prisma.spots.findUnique({
         where: {
-          spotId: input.spotId
+          id: input.spotId,
         }
-      })
-
+      });
     }),
+  
+  getSpotsForSelect: publicProcedure
+    .query(({ ctx }) => {
+      return ctx.prisma.spots.findMany({
+        select: {
+          spotId: true,
+          name: true
+        }
+      });
+    }),
+
 });
