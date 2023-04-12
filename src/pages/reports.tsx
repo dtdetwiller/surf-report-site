@@ -1,7 +1,6 @@
 import { type NextPage } from 'next';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { LoadingSpinner } from '~/components/loadingSpinner';
 import { api } from '~/utils/api';
 
 interface WaveReport {
@@ -20,43 +19,32 @@ const Reports: NextPage = () => {
   const [sixteenDayReport, setSixteenDayReport] = useState<WaveReport[]>([]);
 
   const { spotId } = router.query;
-  const { data } = api.reports.get16DayReportBySpotId.useQuery({ spotId  });
-
-  /**
-   * Increments the specified date by n
-   */
-  const incrementDate = (date: Date, n: number) => {
-    date.setDate(date.getDate() + 1);
-    return date;
-  }
+  const now = new Date();
+  const hour = now.getUTCHours();
+  
+  const { data: result } = api.reports.get16DayReportBySpotId.useQuery({ spotId, hour });
 
   useEffect(() => {
-    
-    const now = new Date();
-    let utcNow = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours()));
-
-    const temp: WaveReport[] = [];
-    for (let i = 0; i <= 16; i++) {
-      data.find(d => {
-        console.log(d, utcNow)
-        if (d.timestamp === utcNow) {
-          temp.push(d);
-          utcNow = incrementDate(utcNow, 1);
-          return;
-        }
-      })
+    if (result) {
+      const reports = Object.entries(result)
+        .map(([_, reportData]) => {
+  
+          if (typeof reportData === 'object' && reportData?.hasOwnProperty('report')) {
+            return reportData.report;
+          }
+        })
+  
+        setSixteenDayReport(reports);
     }
+  }, [result]);
 
-    console.log(temp)
-
-    setSixteenDayReport(temp);
-  }, [data]);
+  console.log("REPORTS", sixteenDayReport)
 
   return (
     <div>
       { sixteenDayReport.map(report => (
 
-          <div key={report.id}>
+          <div key={report.}>
             {report.waveHeightMin}-{report.waveHeightMax}
           </div>
         )

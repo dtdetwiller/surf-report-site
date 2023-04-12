@@ -1,7 +1,8 @@
 import axios from 'axios'
 import { type NextPage } from 'next'
 import { useSession } from 'next-auth/react'
-import React from 'react'
+import React, { useState } from 'react'
+import Toast from '~/components/toast/toast'
 import { env } from '~/env.mjs'
 import { api } from '~/utils/api'
 
@@ -46,18 +47,54 @@ declare type WaveRes = {
 const Admin: NextPage = () => {
 
   const { data: sessionData } = useSession();
+
+  const [selectedSpot, setSelectedSpot] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
+  const { data: spots } = api.spots.getSpotsForSelect.useQuery();
   const insertWaveReport = api.reports.insertWaveReport.useMutation();
-  // Remove the old reports api
+  const removePastReportsBySpotId = api.reports.removePastReportsBySpotId.useMutation();
+
+  /**
+   * Handles the state for the selected spot
+   */
+  const handleSpotChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSpot(e.target.value);
+  }
   
+  /**
+   * Updates the data
+   */
   const updateData = () => {
+
+    if (!selectedSpot) {
+      setToastMessage('Please select a spot to fetch data for.')
+      setShowToast(true);
+
+      setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
+
+      return;
+    }
     
-    const spotId = '60492e85f79634ecb8e7b0fa'; // Jenness
+    const spotId = selectedSpot;
     const waveApi: string = env.NEXT_PUBLIC_WAVE_API_URI + spotId;
 
     void (async () => {
       
       await axios.get(waveApi)
         .then(async (res: WaveRes) => {
+
+          const date = new Date();
+          date.setHours(0, 0, 0, 0);
+
+          // Remove past data
+          await removePastReportsBySpotId.mutateAsync({
+            spotId: spotId,
+            date: date
+          });
 
           // Grab the waves array from the response
           const waves = res.data.data.wave;
@@ -81,9 +118,6 @@ const Admin: NextPage = () => {
             });
 
           }
-
-
-
         })
         .catch((err) => {
           console.error(err);
@@ -93,7 +127,17 @@ const Admin: NextPage = () => {
   }
 
   return (
-    <main className="min-h-screen bg-gray-900">
+    <div className='flex flex-col items-center justify-center gap-4 h-full'>
+      <select className="bg-gray-50 border max-w-xs border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        value={selectedSpot} 
+        onChange={handleSpotChange}>
+          <option value="">Pick a Spot</option>
+        {spots?.map((spot) => (
+          <option key={spot.spotId} value={spot.spotId}>
+            {spot.name}
+          </option>
+        ))}
+      </select>
 
       <button
         className="btn"
@@ -102,7 +146,11 @@ const Admin: NextPage = () => {
         Fetch Data
       </button>
 
-    </main>
+      {showToast &&
+        <Toast message={toastMessage}/>
+      }
+    </div>
+
   )
 }
 
