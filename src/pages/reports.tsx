@@ -21,8 +21,8 @@ const Reports: NextPage = () => {
   const router = useRouter();
   const [sixteenDayReport, setSixteenDayReport] = useState<WaveReport[]>([]);
 
-  const { spotId } = router.query;
-  
+  const { spotId } = router.query as { spotId: string };
+
   const { data: result } = api.reports.getWaveReportBySpotId.useQuery({ spotId });
 
   useEffect(() => {
