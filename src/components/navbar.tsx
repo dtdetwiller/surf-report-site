@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
   const { data: sessionData } = useSession();
 
   return (
-    <nav className="flex justify-between items-center text-white p-4">
+    <nav className="sticky top-0 z-50 bg-gray-900 flex justify-between items-center text-white p-4">
       <Link href="/home" className="text-white text-2xl">
         <FontAwesomeIcon icon={faWater} />
       </Link>

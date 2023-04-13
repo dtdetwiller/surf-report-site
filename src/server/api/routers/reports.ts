@@ -26,67 +26,29 @@ export const reportsRouter = createTRPCRouter({
 
     }),
   
-  get16DayReportBySpotId: publicProcedure
+  getWaveReportBySpotId: publicProcedure
     .input(z.object({
-      spotId: z.string(),
-      hour: z.number()
+      spotId: z.string()
     }))
     .query(async ({ctx, input}) => {
       
-      return await ctx.prisma.waveReports.aggregateRaw({
-        pipeline: [
-          {
-            $group: {
-              _id: {
-                date: { $dateToString: { format: "%Y-%m-%d", date: "$timestamp" } },
-                hour: { $hour: "$timestamp" }
-              },
-              surf_height: { $max: "$waveHeightMax" },
-              report: { $first: "$$ROOT" }
-            }
-          },
-          {
-            $match: {
-              "_id.hour": input.hour,
-              "report.spotId": input.spotId
-            }
-          },
-          {
-            $group: {
-              _id: { $dateToString: { format: "%Y-%m-%d", date: "$report.timestamp" } },
-              surf_height: { $max: "$surf_height" },
-              report: { $first: "$report" }
-            }
-          },
-          {
-            $project: {
-              _id: 0,
-              report: 1
-            }
-          },
-          {
-            $sort: {
-              date: 1
-            }
-          }
-        ]
+      return await ctx.prisma.waveReports.findMany({
+        where: {
+          spotId: input.spotId
+        }
       });
       
     }),
 
   removePastReportsBySpotId: publicProcedure
     .input(z.object({
-      spotId: z.string(),
-      date: z.date()
+      spotId: z.string()
     }))
     .mutation(async ({ctx, input}) => {
 
       await ctx.prisma.waveReports.deleteMany({
         where: {
           spotId: input.spotId,
-          timestamp: {
-            lt: input.date
-          }
         }
       })
     }),

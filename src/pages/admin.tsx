@@ -92,8 +92,7 @@ const Admin: NextPage = () => {
 
           // Remove past data
           await removePastReportsBySpotId.mutateAsync({
-            spotId: spotId,
-            date: date
+            spotId: spotId
           });
 
           // Grab the waves array from the response
@@ -127,7 +126,7 @@ const Admin: NextPage = () => {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center gap-4 h-full'>
+    <div className='flex flex-col items-center justify-center gap-4 h-[calc(100vh-64px)] p-5'>
       <select className="bg-gray-50 border max-w-xs border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         value={selectedSpot} 
         onChange={handleSpotChange}>
