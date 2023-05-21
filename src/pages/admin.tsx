@@ -51,6 +51,7 @@ const Admin: NextPage = () => {
   const [selectedSpot, setSelectedSpot] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const { data: spots } = api.spots.getSpotsForSelect.useQuery();
   const insertWaveReport = api.reports.insertWaveReport.useMutation();
@@ -67,6 +68,8 @@ const Admin: NextPage = () => {
    * Updates the data
    */
   const updateData = () => {
+
+    setIsLoading(true);
 
     if (!selectedSpot) {
       setToastMessage('Please select a spot to fetch data for.')
@@ -123,6 +126,8 @@ const Admin: NextPage = () => {
         });
 
     })();
+
+    setIsLoading(false);
   }
 
   return (

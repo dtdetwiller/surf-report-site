@@ -29,4 +29,19 @@ export const spotsRouter = createTRPCRouter({
       });
     }),
 
+  insertNewSpot: publicProcedure
+    .input(z.object({
+      spotId: z.string(),
+      name: z.string()
+    }))
+    .mutation(async ({ input, ctx }) => {
+      
+      await ctx.prisma.spots.create({
+        data: {
+          ...input
+        }
+      });
+
+    }),
+
 });

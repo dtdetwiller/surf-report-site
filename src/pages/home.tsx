@@ -1,5 +1,3 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -18,6 +16,8 @@ const HomePage = () => {
   const [toastMessage, setToastMessage] = useState('');
 
   const { data: spots } = api.spots.getSpotsForSelect.useQuery();
+
+  console.log(session, status);
 
   /**
    * Handles the state for the selected spot
@@ -56,6 +56,17 @@ const HomePage = () => {
   if (status === 'unauthenticated') {
     void router.push('/');
     return;
+  }
+
+  if (!session?.user.roles.includes('member') || !session?.user.roles.includes('admin')) {
+    return (
+      <div className='h-[calc(100vh-64px)] p-5'>
+        <div className='flex flex-col items-center justify-center gap-4 h-full text-white'>
+          <div className='text-4xl font-bold'>Access Denied Brah</div>
+          <div className=''>If you're friends with Dan, ask him for access.</div>
+        </div>
+      </div>
+    )
   }
 
   return (
