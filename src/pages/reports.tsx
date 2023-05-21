@@ -80,7 +80,7 @@ const Reports: NextPage = () => {
 
   return (
     <div className='flex flex-col gap-4 p-5'>
-      <Link className='btn w-fit' href='/'>
+      <Link className='btn w-fit' href='/home'>
         <FontAwesomeIcon icon={faArrowLeft} />
       </Link>
 
