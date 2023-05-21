@@ -1,22 +1,51 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import { signIn, useSession } from "next-auth/react";
 
-import React, { useEffect } from "react";
-import Link from "next/link";
+import React, { useState } from "react";
 import { useRouter } from 'next/router';
+import { api } from "~/utils/api";
+import Toast from "~/components/toast/toast";
 
 const Start: NextPage = () => {
 
-  const { data: session } = useSession();
   const router = useRouter();
+  const [selectedSpot, setSelectedSpot] = useState('');
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
-  useEffect(() => {
-    if (session) {
-      void router.push('/home');
+  const { data: spots } = api.spots.getSpotsForSelect.useQuery();
+
+  
+
+  /**
+   * Handles the state for the selected spot
+   */
+  const handleSpotChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSpot(e.target.value);
+  }
+
+  /**
+   * Handle scope button click
+   */
+  const handleScopeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+
+    if (!selectedSpot) {
+
+      setToastMessage('Please select a spot to scope')
+      setShowToast(true);
+
+      setTimeout(() => {
+        setShowToast(false);
+      }, 5000);
+
+      return;
     }
-  }, [session, router]);
 
+    void router.push({
+      pathname: 'reports',
+      query: { spotId: selectedSpot },
+    })
+  }
 
   return (
     <>
@@ -26,33 +55,32 @@ const Start: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">
 
-        <AuthShowcase />
+      <main className='h-[calc(100vh-64px)] p-5'>
+        <div className='flex flex-col items-center justify-center gap-4 h-full'>
+          <select className="bg-gray-50 border max-w-xs border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            value={selectedSpot} 
+            onChange={handleSpotChange}>
+              <option value="">Pick a Spot</option>
+            {spots?.map((spot) => (
+              <option key={spot.spotId} value={spot.spotId}>
+                {spot.name}
+              </option>
+            ))}
+          </select>
 
+          <button className='btn' onClick={handleScopeClick}>
+            Scope
+          </button>
+
+          {showToast &&
+            <Toast message={toastMessage}/>
+          }
+        </div>
       </main>
+
     </>
   );
 };
 
 export default Start;
-
-const AuthShowcase: React.FC = () => {
-
-  const { data: session } = useSession();
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-
-      { !session &&
-        <button
-        className="btn"
-        onClick={() => void signIn()}
-        >
-          Sign in
-        </button>
-      }
-
-    </div>
-  );
-};

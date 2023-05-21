@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { type NextPage } from 'next'
-import { useSession } from 'next-auth/react'
 import React, { useState } from 'react'
 import Toast from '~/components/toast/toast'
 import { env } from '~/env.mjs'
@@ -45,8 +44,6 @@ declare type WaveRes = {
 }
 
 const Admin: NextPage = () => {
-
-  const { data: sessionData } = useSession();
 
   const [selectedSpot, setSelectedSpot] = useState('');
   const [showToast, setShowToast] = useState(false);
