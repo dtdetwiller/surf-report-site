@@ -17,8 +17,6 @@ const HomePage = () => {
 
   const { data: spots } = api.spots.getSpotsForSelect.useQuery();
 
-  console.log(session, status);
-
   /**
    * Handles the state for the selected spot
    */
@@ -58,7 +56,7 @@ const HomePage = () => {
     return;
   }
 
-  if (!session?.user.roles.includes('member') || !session?.user.roles.includes('admin')) {
+  if (!session?.user.roles.includes('member')) {
     return (
       <div className='h-[calc(100vh-64px)] p-5'>
         <div className='flex flex-col items-center justify-center gap-4 h-full text-white'>
