@@ -5,21 +5,28 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
+import { WaveReports } from '@prisma/client';
 
-interface WaveReport {
-  id: string,
-  spotId: string,
-  timestamp: Date,
-  utcOffset: number,
-  waveHeightMin: number,
-  waveHeightMax: number,
-  humanRelation: string
-}
+// interface WaveReport {
+//   id: string,
+//   spotId: string,
+//   timestamp: Date,
+//   utcOffset: number,
+//   waveHeightMin: number,
+//   waveHeightMax: number,
+//   humanRelation: string,
+//   swells: object[],
+//   windSpeed: number,
+//   windDirection: number,
+//   directionType: string,
+//   windGust: number,
+//   airTemperature: number
+// }
 
 const Reports: NextPage = () => {
 
   const router = useRouter();
-  const [sixteenDayReport, setSixteenDayReport] = useState<WaveReport[]>([]);
+  const [sixteenDayReport, setSixteenDayReport] = useState<WaveReports[]>([]);
 
   const { spotId } = router.query as { spotId: string };
 
@@ -32,7 +39,7 @@ const Reports: NextPage = () => {
     const now = new Date();
     const currentHour = now.getHours();
     
-    const waveReportsByDay: { [date: string]: WaveReport } = result.reduce((acc, report) => {
+    const waveReportsByDay: { [date: string]: WaveReports } = result.reduce((acc, report) => {
       // Get the date without the time
       const date: string = new Date(report.timestamp.getFullYear(), report.timestamp.getMonth(), report.timestamp.getDate()).toString();
     
@@ -47,7 +54,7 @@ const Reports: NextPage = () => {
       }
     
       return acc;
-    }, {} as { [date: string]: WaveReport});
+    }, {} as { [date: string]: WaveReports});
     
     // Convert object to array
     const waveReportsArray = Object.values(waveReportsByDay);
