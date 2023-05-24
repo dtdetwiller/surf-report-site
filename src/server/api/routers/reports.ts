@@ -1,4 +1,3 @@
-import { WaveReports } from "@prisma/client";
 import { z } from "zod";
 
 import {
@@ -7,24 +6,24 @@ import {
 } from "~/server/api/trpc";
 
 export const reportsRouter = createTRPCRouter({
-  insertWaveReport: publicProcedure
-    .input(z.object({
-      spotId: z.string(),
-      timestamp: z.date(),
-      utcOffset: z.number(),
-      waveHeightMin: z.number(),
-      waveHeightMax: z.number(),
-      humanRelation: z.string()
-     }))
-    .mutation(async ({ input, ctx }) => {
+  // insertWaveReport: publicProcedure
+  //   .input(z.object({
+  //     spotId: z.string(),
+  //     timestamp: z.date(),
+  //     utcOffset: z.number(),
+  //     waveHeightMin: z.number(),
+  //     waveHeightMax: z.number(),
+  //     humanRelation: z.string()
+  //    }))
+  //   .mutation(async ({ input, ctx }) => {
       
-      await ctx.prisma.waveReports.create({
-        data: {
-          ...input
-        }
-      });
+  //     await ctx.prisma.waveReports.create({
+  //       data: {
+  //         ...input
+  //       }
+  //     });
 
-    }),
+  //   }),
   
   getWaveReportBySpotId: publicProcedure
     .input(z.object({
@@ -40,17 +39,17 @@ export const reportsRouter = createTRPCRouter({
       
     }),
 
-  removePastReportsBySpotId: publicProcedure
-    .input(z.object({
-      spotId: z.string()
-    }))
-    .mutation(async ({ctx, input}) => {
+  // removePastReportsBySpotId: publicProcedure
+  //   .input(z.object({
+  //     spotId: z.string()
+  //   }))
+  //   .mutation(async ({ctx, input}) => {
 
-      await ctx.prisma.waveReports.deleteMany({
-        where: {
-          spotId: input.spotId,
-        }
-      })
-    }),
+  //     await ctx.prisma.waveReports.deleteMany({
+  //       where: {
+  //         spotId: input.spotId,
+  //       }
+  //     })
+  //   }),
 
 });

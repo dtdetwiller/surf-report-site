@@ -22,9 +22,7 @@ const config = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'example.com',
-        port: '',
-        pathname: '/account123/**',
+        hostname: 'lh3.googleusercontent.com',
       },
     ],
   },

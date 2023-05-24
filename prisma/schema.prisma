@@ -75,4 +75,10 @@ model WaveReports {
     waveHeightMin Int
     waveHeightMax Int
     humanRelation String
+    swells Json[]
+    windSpeed Float
+    windDirection Float
+    directionType String
+    windGust Float
+    airTemperature Float
 }

@@ -84,6 +84,7 @@ const Admin: NextPage = () => {
     
     const spotId = selectedSpot;
     const waveApi: string = env.NEXT_PUBLIC_WAVE_API_URI + spotId;
+    const windApi: string = env.NEXT_PUBLIC_WAVE_API_URI + spotId;
 
     void (async () => {
       

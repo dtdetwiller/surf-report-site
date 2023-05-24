@@ -29,6 +29,7 @@ const server = z.object({
  */
 const client = z.object({
   NEXT_PUBLIC_WAVE_API_URI: z.string(),
+  NEXT_PUBLIC_WIND_API_URI: z.string()
   // NEXT_PUBLIC_CLIENT_VAR: z.string().min(1),
 });
 
@@ -45,7 +46,8 @@ const processEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
-  NEXT_PUBLIC_WAVE_API_URI: process.env.NEXT_PUBLIC_WAVE_API_URI
+  NEXT_PUBLIC_WAVE_API_URI: process.env.NEXT_PUBLIC_WAVE_API_URI,
+  NEXT_PUBLIC_WIND_API_URI: process.env.NEXT_PUBLIC_WIND_API_URI
   // NEXT_PUBLIC_CLIENT_VAR: process.env.NEXT_PUBLIC_CLIENT_VAR,
 };
 
