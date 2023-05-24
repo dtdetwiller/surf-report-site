@@ -5,23 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
-import { WaveReports } from '@prisma/client';
-
-// interface WaveReport {
-//   id: string,
-//   spotId: string,
-//   timestamp: Date,
-//   utcOffset: number,
-//   waveHeightMin: number,
-//   waveHeightMax: number,
-//   humanRelation: string,
-//   swells: object[],
-//   windSpeed: number,
-//   windDirection: number,
-//   directionType: string,
-//   windGust: number,
-//   airTemperature: number
-// }
+import type { WaveReports } from '@prisma/client';
 
 const Reports: NextPage = () => {
 

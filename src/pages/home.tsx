@@ -29,7 +29,7 @@ const HomePage = () => {
   /**
    * Handle scope button click
    */
-  const handleScopeClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleScopeClick = () => {
 
     if (!selectedSpot) {
 
@@ -63,7 +63,7 @@ const HomePage = () => {
       <div className='h-[calc(100vh-64px)] p-5'>
         <div className='flex flex-col items-center justify-center gap-4 h-full text-white'>
           <div className='text-4xl font-bold'>Access Denied Brah</div>
-          <div className=''>If you're friends with Dan, ask him for access.</div>
+          <div className=''>If you&apos;re friends with Dan, ask him for access.</div>
         </div>
       </div>
     )

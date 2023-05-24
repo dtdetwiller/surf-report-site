@@ -3,7 +3,6 @@ import Head from "next/head";
 import { signIn, useSession } from "next-auth/react";
 
 import React, { useEffect } from "react";
-import Link from "next/link";
 import { useRouter } from 'next/router';
 
 const Start: NextPage = () => {
