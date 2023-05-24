@@ -1,5 +1,3 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { type NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -13,8 +11,8 @@ const Reports: NextPage = () => {
   const [sixteenDayReport, setSixteenDayReport] = useState<WaveReports[]>([]);
 
   const { spotId } = router.query as { spotId: string };
-
   const { data: result } = api.reports.getWaveReportBySpotId.useQuery({ spotId });
+  const { data: spot } = api.spots.spotBySpotId.useQuery({ spotId });
 
   useEffect(() => {
 
@@ -68,12 +66,18 @@ const Reports: NextPage = () => {
     return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix}`;
   }
 
-
   return (
     <div className='flex flex-col gap-4 p-5'>
-      <Link className='btn w-fit' href='/home'>
-        <FontAwesomeIcon icon={faArrowLeft} />
-      </Link>
+
+      <div className='flex justify-between items-center'>
+        <Link className='btn w-fit' href='/home'>
+          Back
+        </Link>
+
+        <div className='text-xl font-bold text-white'>
+          {spot?.name}
+        </div>
+      </div>
 
       <div className='h-full flex flex-col gap-2 mb-5'>
       { sixteenDayReport.map((report, idx) => (

@@ -14,7 +14,7 @@ export const spotsRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       return ctx.prisma.spots.findUnique({
         where: {
-          id: input.spotId,
+          spotId: input.spotId,
         }
       });
     }),
