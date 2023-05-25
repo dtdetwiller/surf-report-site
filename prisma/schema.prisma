@@ -67,6 +67,11 @@ model Spots {
     name String
 }
 
+type Rating {
+    key String
+    value Int
+}
+
 model WaveReports {
     id String @id @default(auto()) @map("_id") @db.ObjectId
     spotId String
@@ -81,5 +86,5 @@ model WaveReports {
     directionType String
     windGust Float
     airTemperature Float
-    rating Json
+    rating Rating
 }

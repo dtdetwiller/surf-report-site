@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import type { WaveReports } from '@prisma/client';
+import { faWind, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Reports: NextPage = () => {
 
@@ -39,9 +41,19 @@ const Reports: NextPage = () => {
     }, {} as { [date: string]: WaveReports});
     
     // Convert object to array
-    const waveReportsArray = Object.values(waveReportsByDay);
+    let waveReportsArray = Object.values(waveReportsByDay);
+
+    if (waveReportsArray[0]?.timestamp.getDate() !== now.getDate()) {
+      waveReportsArray = waveReportsArray.slice(1);
+    }
 
     setSixteenDayReport(waveReportsArray);
+
+    let i = 0;
+    for (const report of sixteenDayReport) {
+      adjustWindDirection(`wind-arrow-${i}`, report.windDirection);
+      i++;
+    }
 
   }, [result]);
 
@@ -66,6 +78,66 @@ const Reports: NextPage = () => {
     return `${dayOfWeek}, ${month} ${dayOfMonth}${suffix}`;
   }
 
+  /**
+   * Returns the rating element.
+   * 
+   * @param key 
+   * @returns 
+   */
+  const getRating = (value: number) => {
+
+    let text = '';
+    let colorClass = '';
+
+    switch (value) {
+      case 0:
+        text = 'very poor';
+        colorClass = 'bg-red-400';
+        break;
+      case 1:
+        text = 'poor';
+        colorClass = 'bg-orange-400';
+        break;
+      case 2:
+        text = 'poor to fair';
+        colorClass = 'bg-yellow-400';
+        break;
+      case 3:
+        text = 'fair';
+        colorClass = 'bg-green-400';
+        break;
+      case 4:
+        text = 'fair to good';
+        colorClass = 'bg-emerald-600';
+        break;
+      case 5:
+        text = 'good';
+        colorClass = 'bg-indigo-400';
+        break;
+      case 6:
+        text = 'epic ones!';
+        colorClass = 'bg-purple-400';
+        break;
+      default:
+        text = 'weird ones';
+        colorClass = 'bg-white';
+        break;
+    }
+
+    return (
+      <div className={colorClass + ' px-3 py-1 rounded-full text-gray-900 text-xs'}>
+        {text}
+      </div>
+    )
+  }
+
+  const adjustWindDirection = (id: string, windDirection: number) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.style.transform = `rotate(${windDirection}deg)`;
+    }
+  }
+
   return (
     <div className='flex flex-col gap-4 p-5'>
 
@@ -84,16 +156,20 @@ const Reports: NextPage = () => {
 
           <div className='bg-gray-800 rounded-3xl p-5' key={idx}>
 
-            <div className='text-sky-300'>
-              {formatDateString(report.timestamp)}
+            <div className='flex justify-between items-center'>
+              <div className='text-sky-300'>
+                {formatDateString(report.timestamp)}
+              </div>
+              {getRating(Number(report.rating.value))}
             </div>
 
-            <div className='flex justify-start items-baseline gap-4'>
+            <div className='flex justify-between items-baseline gap-4'>
               <div className='text-sky-200 text-3xl'>
-                {report.waveHeightMin}-{report.waveHeightMax}
+                {report.waveHeightMin}-{report.waveHeightMax} ft
               </div>
-              <div className='text-sky-200 h-fit'>
-                {report.humanRelation}
+              <div className='flex gap-2 text-sky-200 h-fit'>
+                <FontAwesomeIcon icon={faWind} />
+                <FontAwesomeIcon id={`wind-arrow-${idx}`} icon={faArrowRight} />
               </div>
             </div>
           </div>
