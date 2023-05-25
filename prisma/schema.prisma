@@ -81,5 +81,5 @@ model WaveReports {
     directionType String
     windGust Float
     airTemperature Float
-    rating Json[]
+    rating Json
 }
