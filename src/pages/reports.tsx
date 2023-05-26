@@ -55,13 +55,6 @@ const Reports: NextPage = () => {
     }
 
     setSixteenDayReport(waveReportsArray);
-    console.log(waveReportsArray)
-
-    // let i = 0;
-    // for (const report of sixteenDayReport) {
-    //   adjustWindDirection(`wind-arrow-${i}`, report.windDirection);
-    //   i++;
-    // }
 
   }, [result]);
 
