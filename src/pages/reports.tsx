@@ -1,3 +1,4 @@
+import { type NextPage } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
@@ -5,16 +6,10 @@ import { api } from '~/utils/api';
 import type { WaveReports } from '@prisma/client';
 import { faWind, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useSession } from 'next-auth/react';
 
-const Reports = () => {
+const Reports: NextPage = () => {
 
-  const { data: session } = useSession();
   const router = useRouter();
-  
-  if (!session?.user.roles.includes('member')) {
-    void router.push('/');
-  }
 
   const [sixteenDayReport, setSixteenDayReport] = useState<WaveReports[]>([]);
 
