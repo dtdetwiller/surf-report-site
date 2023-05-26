@@ -6,10 +6,17 @@ import { api } from '~/utils/api';
 import type { WaveReports } from '@prisma/client';
 import { faWind, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSession } from 'next-auth/react';
 
 const Reports: NextPage = () => {
 
+  const { data: session } = useSession();
   const router = useRouter();
+  
+  if (!session?.user.roles.includes('member')) {
+    void router.push('/');
+  }
+
   const [sixteenDayReport, setSixteenDayReport] = useState<WaveReports[]>([]);
 
   const { spotId } = router.query as { spotId: string };

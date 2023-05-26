@@ -1,9 +1,20 @@
 import { type NextPage } from 'next'
+import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react'
 import { api } from '~/utils/api'
 
 const Admin: NextPage = () => {
+
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  if (!session?.user.roles.includes('admin') && session?.user.roles.includes('member')) {
+    void router.push('/home');
+  } else if (!session?.user.roles.includes('member')) {
+    void router.push('/');
+  }
 
   const [name, setName] = useState('');
   const [spotId, setSpotId] = useState('');
