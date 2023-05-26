@@ -17,6 +17,9 @@ const Admin: NextPage = () => {
     }
 
     mutation.mutate({ name, spotId });
+
+    setName('');
+    setSpotId('');
   }
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,12 +50,20 @@ const Admin: NextPage = () => {
 
           <div className='w-4/5'>
             <label htmlFor="spot-name" className='text-white text-lg'>Spot Name</label>
-            <input onChange={(e) => handleNameChange(e)} type="text" id='spot-name' className='m-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+            <input 
+              onChange={(e) => handleNameChange(e)} 
+              type="text" id='spot-name'
+              value={name}
+              className='m-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
           </div>
 
           <div className='w-4/5'>
             <label htmlFor="spot-id" className='text-white text-lg'>Spot ID</label>
-            <input onChange={(e) => handleSpotIdChange(e)} type="text" id='spot-name' className='m-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
+            <input 
+              onChange={(e) => handleSpotIdChange(e)}
+              type="text" id='spot-name'
+              value={spotId}
+              className='m-0 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' />
           </div>
 
           <button className='btn w-4/5' onClick={(e) => insertSpot(e)}>

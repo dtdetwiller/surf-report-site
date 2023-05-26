@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import { api } from '~/utils/api';
 import type { WaveReports } from '@prisma/client';
-import { faWind, faArrowRight } from '@fortawesome/free-solid-svg-icons';
+import { faWind, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Reports: NextPage = () => {
@@ -48,12 +48,13 @@ const Reports: NextPage = () => {
     }
 
     setSixteenDayReport(waveReportsArray);
+    console.log(waveReportsArray)
 
-    let i = 0;
-    for (const report of sixteenDayReport) {
-      adjustWindDirection(`wind-arrow-${i}`, report.windDirection);
-      i++;
-    }
+    // let i = 0;
+    // for (const report of sixteenDayReport) {
+    //   adjustWindDirection(`wind-arrow-${i}`, report.windDirection);
+    //   i++;
+    // }
 
   }, [result]);
 
@@ -131,13 +132,6 @@ const Reports: NextPage = () => {
     )
   }
 
-  const adjustWindDirection = (id: string, windDirection: number) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.style.transform = `rotate(${windDirection}deg)`;
-    }
-  }
-
   return (
     <div className='flex flex-col gap-4 p-5'>
 
@@ -169,7 +163,13 @@ const Reports: NextPage = () => {
               </div>
               <div className='flex gap-2 text-sky-200 h-fit'>
                 <FontAwesomeIcon icon={faWind} />
-                <FontAwesomeIcon id={`wind-arrow-${idx}`} icon={faArrowRight} />
+                <FontAwesomeIcon 
+                  id={`wind-arrow-${idx}`} 
+                  icon={faArrowUp}
+                  style={{
+                    transform: `rotate(${report.windDirection - 180}deg)`,
+                  }}
+                />
               </div>
             </div>
           </div>
